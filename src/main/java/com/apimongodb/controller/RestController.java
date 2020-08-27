@@ -1,18 +1,19 @@
-package com.apimongodb.Controller;
+package com.apimongodb.controller;
 
 
-import com.apimongodb.Model.Student;
-import com.apimongodb.Sevice.StudentService;
-
+import com.apimongodb.model.Student;
+import com.apimongodb.service.StudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @org.springframework.web.bind.annotation.RestController
@@ -26,7 +27,7 @@ public class RestController {
     StudentService studentService;
 
 
-    @RequestMapping(value = "/save",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/info",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
     public  String create(@RequestBody Student student)
     {
              LOGGER.info("The data is {}",student);
@@ -34,7 +35,7 @@ public class RestController {
     }
 
 
-    @GetMapping(value = "/save/{id}")
+    @RequestMapping (value = "/info/{id}",method = RequestMethod.GET)
     public  Student getById(@PathVariable int id)
     {
         LOGGER.info("The id is {}",id);
@@ -42,14 +43,14 @@ public class RestController {
     }
 
 
-    @GetMapping(value = "/getAll")
-    public List<Student> getAllById( )
+    @RequestMapping(value = "/info",method = RequestMethod.GET)
+    public List<Student> getAll()
     {
-        LOGGER.info("The id is");
+        LOGGER.info("The data from the db for all the enteries is ");
         return studentService.getAllStudent();
     }
 
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/info/{id}",method = RequestMethod.DELETE)
     public  String update(@PathVariable int id)
     {
         LOGGER.info("The data is {}",id);
@@ -57,7 +58,7 @@ public class RestController {
     }
 
 
-    @RequestMapping(value = "/update",method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/info",method = RequestMethod.PUT)
     public  String updateStudent(@RequestBody Student student)
     {
         LOGGER.info("The data is {}",student);

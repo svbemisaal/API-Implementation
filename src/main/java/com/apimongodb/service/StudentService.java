@@ -1,17 +1,15 @@
-package com.apimongodb.Sevice;
+package com.apimongodb.service;
 
-import com.apimongodb.Controller.RestController;
-import com.apimongodb.Model.Student;
-import com.apimongodb.Repository.StudentIdentity;
-import com.google.gson.Gson;
+import com.apimongodb.controller.RestController;
+import com.apimongodb.model.Student;
+import com.apimongodb.repository.StudentIdentity;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -19,13 +17,16 @@ public class StudentService {
 
     private final StudentIdentity studentIdentity;
 
+   // private  final RedisTemplate redisTemplate;
+
     public static final Logger LOGGER = LoggerFactory.getLogger(RestController.class);
 
 
 
-    public StudentService (StudentIdentity studentIdentity)
+    public StudentService (StudentIdentity studentIdentity,RedisTemplate redisTemplate)
     {
         this.studentIdentity=studentIdentity;
+     //   this.redisTemplate=redisTemplate;
     }
 
 
@@ -37,6 +38,8 @@ public class StudentService {
         try{
 
             studentIdentity.save(student);
+
+
 
             done ="data saved in database";
         }
@@ -67,9 +70,10 @@ public class StudentService {
     public List<Student> getAllStudent()
     {
         String done=null;
-        List<Student> student= studentIdentity.findAll();
 
-        LOGGER.info("The student value is {}",student);
+        List<Student> student =studentIdentity.findAll();
+
+        LOGGER.info("The student value is {}");
         return  student;
     }
 
@@ -83,13 +87,12 @@ public class StudentService {
 
         LOGGER.info("The id of student  is {}",id);
 
-        return "The student with id "+id+"is deleted";
+        return "The student with id " +id + " is deleted";
 
     }
 
 
     public String updateStudent(Student student) {
-
         studentIdentity.save(student);
 
         return "db updated with new entry";
